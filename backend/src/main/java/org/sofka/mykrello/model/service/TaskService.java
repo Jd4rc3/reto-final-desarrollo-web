@@ -70,8 +70,8 @@ public class TaskService implements TaskServiceInterface {
     }*/
 
     @Override
-    public TaskDomain delete(Integer id) {
-        // TODO Auto-generated method stub
-        return null;
+    public void  delete(Integer id ) {
+
+        taskRepository.deleteById(id);
     }
 }

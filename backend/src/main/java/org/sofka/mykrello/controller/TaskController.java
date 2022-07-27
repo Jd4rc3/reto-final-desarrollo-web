@@ -38,7 +38,7 @@ public class TaskController {
 
     @PutMapping("/{id}")
     public ResponseEntity<MyResponseUtility> updateTask(@PathVariable("id") Integer taskId,
-            @RequestBody TaskDomain task) {
+                                                        @RequestBody TaskDomain task) {
 
         var updatedValue = taskService.update(taskId, task);
 
@@ -55,6 +55,15 @@ public class TaskController {
     }
 
 
-    //    @DeleteMapping
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MyResponseUtility> deleteTask(@PathVariable("id") Integer taskId) {
+
+        response.data = "";
+        response.error = false;
+        response.message = "successfully deleted";
+        taskService.delete(taskId);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 }
