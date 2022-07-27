@@ -1,15 +1,12 @@
 package org.sofka.mykrello.controller;
 
+import org.sofka.mykrello.model.domain.TaskDomain;
 import org.sofka.mykrello.model.service.TaskService;
 import org.sofka.mykrello.utilities.MyResponseUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(value = "*")
 @RestController
@@ -29,6 +26,14 @@ public class TaskController {
         response.data = taskService.findAllTasksByBoardId(boardId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/create")
+    public  ResponseEntity<MyResponseUtility> createTask(@RequestBody TaskDomain task){
+
+        response.data = taskService.create(task);
+
+        return  new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 }

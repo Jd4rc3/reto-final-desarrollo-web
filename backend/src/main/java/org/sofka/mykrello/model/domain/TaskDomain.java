@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -36,10 +38,10 @@ public class TaskDomain implements Serializable {
     private String description;
 
     @Column(name = "tsk_delivery_date")
-    private Instant deliveryDate;
+    private LocalDate deliveryDate;
 
     @Column(name = "tsk_created_at")
-    private Instant createdAt;
+    private Instant createdAt = Instant.now();
 
     @Column(name = "tsk_updated_at")
     private Instant updatedAt;
