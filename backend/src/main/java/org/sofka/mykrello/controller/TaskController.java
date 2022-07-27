@@ -29,11 +29,32 @@ public class TaskController {
     }
 
     @PostMapping("/create")
-    public  ResponseEntity<MyResponseUtility> createTask(@RequestBody TaskDomain task){
+    public ResponseEntity<MyResponseUtility> createTask(@RequestBody TaskDomain task) {
 
         response.data = taskService.create(task);
 
-        return  new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MyResponseUtility> updateTask(@PathVariable("id") Integer taskId,
+            @RequestBody TaskDomain task) {
+
+        var updatedValue = taskService.update(taskId, task);
+
+        if (updatedValue != null) {
+            response.data = updatedValue;
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+
+        response.data = "";
+        response.error = true;
+        response.message = "Task not found";
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+
+    //    @DeleteMapping
 
 }

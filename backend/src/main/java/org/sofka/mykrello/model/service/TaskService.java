@@ -1,10 +1,13 @@
 package org.sofka.mykrello.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.sofka.mykrello.model.domain.TaskDomain;
 import org.sofka.mykrello.model.repository.TaskRepository;
 import org.sofka.mykrello.model.service.interfaces.TaskServiceInterface;
+import org.sofka.mykrello.utilities.CustomModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,9 @@ public class TaskService implements TaskServiceInterface {
 
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public List<TaskDomain> findAllTasksByBoardId(Integer idBoard) {
@@ -35,8 +41,35 @@ public class TaskService implements TaskServiceInterface {
 
     @Override
     public TaskDomain update(Integer id, TaskDomain task) {
-        // TODO Auto-generated method stub
+        var oldTask = taskRepository.findById(id).orElse(null);
+
+        if (oldTask != null) {
+            var updatedTask = mapToTaskDomain(task, oldTask);
+
+            return taskRepository.save(updatedTask);
+        }
+
         return null;
+    }
+
+    private TaskDomain mapToTaskDomain(TaskDomain task, TaskDomain oldTask) {
+        var name = task.getName();
+        var description = task.getDescription();
+        var date = task.getDeliveryDate();
+
+        if (name != null) {
+            oldTask.setName(name);
+        }
+
+        if (description != null) {
+            oldTask.setDescription(description);
+        }
+
+        if (date != null) {
+            oldTask.setDeliveryDate(date);
+        }
+
+        return oldTask;
     }
 
     @Override
