@@ -68,4 +68,9 @@ public class TaskService implements TaskServiceInterface {
     public void delete(Integer id) {
         taskRepository.deleteById(id);
     }
+
+    public  void deleteAllBoardId(Integer id){
+        var taskBoard = taskRepository.findAllByBoardId(id);
+        taskRepository.deleteAll(taskBoard);
+    }
 }

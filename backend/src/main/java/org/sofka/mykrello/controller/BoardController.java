@@ -54,7 +54,8 @@ public class BoardController {
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<MyResponseUtility> delete(@PathVariable(value = "id") Integer id) {
-        response.data = boardService.delete(id);
+        response.data="";
+        boardService.delete(id);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 

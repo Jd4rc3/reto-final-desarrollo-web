@@ -22,6 +22,9 @@ public class BoardService implements BoardServiceInterface {
     private ColumnRepository columnRepository;
 
     @Autowired
+    private TaskService taskService;
+
+    @Autowired
     private ColumnForBoardRepository columnForBoardRepository;
 
     @Override
@@ -62,19 +65,8 @@ public class BoardService implements BoardServiceInterface {
 
     @Override
     @Transactional
-    public BoardDomain delete(Integer id) {
-        /*var optionalBoard = boardRepository.findById(id);
-        if (optionalBoard.isPresent()) {
-            var board = optionalBoard.get();
-            var columnsForBoard = board.getColumns();
-            if (!columnsForBoard.isEmpty()) {
-                columnsForBoard.forEach((column) -> {
-                    columnForBoardRepository.delete(column);
-                });
-            }
-            boardRepository.delete(optionalBoard.get());
-            return optionalBoard.get();*/
-//        }
-        return null;
+     public void  delete(Integer id) {
+        taskService.deleteAllBoardId(id);
+        boardRepository.deleteById(id);
     }
 }
