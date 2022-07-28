@@ -1,9 +1,9 @@
 package org.sofka.mykrello.model.domain;
 
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,18 +15,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import lombok.Data;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
+@JsonIgnoreProperties({"createdAt", "updatedAt"})
 @Table(name = "krl_column")
-public class ColumnDomain implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+public class ColumnDomain {
     @PreUpdate
     public void preUpdate() {
         if (this.updatedAt == null)
@@ -47,16 +44,12 @@ public class ColumnDomain implements Serializable {
     @Column(name = "clm_updated_at")
     private Instant updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = LogDomain.class, cascade = CascadeType.ALL, mappedBy = "previous")
-    @JsonManagedReference(value = "logPrevious")
-    private List<LogDomain> logPrevious = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = LogDomain.class, cascade = CascadeType.ALL, mappedBy = "current")
-    @JsonManagedReference(value = "logCurrent")
-    private List<LogDomain> logCurrent = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = ColumnForBoardDomain.class, cascade = CascadeType.ALL, mappedBy = "column")
-    @JsonManagedReference(value = "columnForBoards")
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = ColumnForBoardDomain.class, cascade =
+            CascadeType.ALL, mappedBy = "column")
+    @JsonBackReference(value = "column-columnForBoard")
     private List<ColumnForBoardDomain> columnForBoards = new ArrayList<>();
 
+    @OneToMany(targetEntity = TaskDomain.class, fetch = FetchType.EAGER, mappedBy = "column")
+    @JsonManagedReference(value = "column-task")
+    private List<TaskDomain> tasks = new ArrayList<>();
 }

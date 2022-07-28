@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface LogRepository extends JpaRepository<LogDomain, Integer>{
-    List<LogDomain> findLogDomainBy(Integer id);
+//    List<LogDomain> findLogDomainBy(Integer id);
 }
 

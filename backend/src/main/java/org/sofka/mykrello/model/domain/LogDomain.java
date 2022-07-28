@@ -43,7 +43,7 @@ public class LogDomain implements Serializable {
     @Column(name = "clm_id_current")
     private Integer currentId;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = ColumnDomain.class, optional = false,
+    /*@ManyToOne(fetch = FetchType.LAZY, targetEntity = ColumnDomain.class, optional = false,
             cascade = CascadeType.ALL)
     @JoinColumn(name = "clm_id_previous", updatable = false, insertable = false)
     @JsonBackReference(value = "logPrevious")
@@ -53,7 +53,7 @@ public class LogDomain implements Serializable {
             cascade = CascadeType.ALL)
     @JoinColumn(name = "clm_id_current", updatable = false, insertable = false)
     @JsonBackReference(value = "logCurrent")
-    private ColumnDomain current;
+    private ColumnDomain current;*/
 
     @Column(name = "log_created_at", nullable = false, updatable = false)
     private Instant createdAt = Instant.now();

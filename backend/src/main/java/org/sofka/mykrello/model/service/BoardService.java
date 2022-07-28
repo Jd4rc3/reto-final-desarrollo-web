@@ -66,7 +66,7 @@ public class BoardService implements BoardServiceInterface {
         var optionalBoard = boardRepository.findById(id);
         if (optionalBoard.isPresent()) {
             var board = optionalBoard.get();
-            var columnsForBoard = board.getColumnsForBoard();
+            var columnsForBoard = board.getColumns();
             if (!columnsForBoard.isEmpty()) {
                 columnsForBoard.forEach((column) -> {
                     columnForBoardRepository.delete(column);

@@ -25,7 +25,8 @@ public class TaskService implements TaskServiceInterface {
 
     @Override
     public List<TaskDomain> findAllTasksByBoardId(Integer idBoard) {
-        return taskRepository.findAllByBoardId(idBoard);
+        return null;
+//        return taskRepository.findAllByBoardId(idBoard);
     }
 
     @Override
@@ -38,10 +39,10 @@ public class TaskService implements TaskServiceInterface {
     @Transactional
     public TaskDomain create(TaskDomain task) {
         Integer taskId = task.getId();
-        Integer defaultColumn = task.getColumnId();
-        var log = new LogDomain(taskId, defaultColumn);
+//        Integer defaultColumn = task.getColumnId();
+//        var log = new LogDomain(taskId, defaultColumn);
 
-        logService.create(log);
+//        logService.create(log);
         return taskRepository.save(task);
     }
 
@@ -51,7 +52,7 @@ public class TaskService implements TaskServiceInterface {
 
         if (oldTask != null) {
             modelMapper.map(task, oldTask);
-            logService.update(new LogDomain(taskId, task.getColumnId()));
+//            logService.update(new LogDomain(taskId, task.getColumnId()));
             return taskRepository.save(oldTask);
         }
 

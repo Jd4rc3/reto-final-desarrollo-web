@@ -1,33 +1,33 @@
 package org.sofka.mykrello.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @Entity
 @Table(name = "krl_task")
-public class TaskDomain implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+public class TaskDomain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tsk_id", nullable = false)
     private Integer id;
 
-    @Column(name = "clm_id_column")
-    private Integer columnId;
+    @JoinColumn(name = "clm_id_column", referencedColumnName = "clm_id")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JsonBackReference(value = "column-task")
+    private ColumnDomain column;
 
     @Column(name = "brd_id_board")
     private Integer boardId;
@@ -46,7 +46,4 @@ public class TaskDomain implements Serializable {
 
     @Column(name = "tsk_updated_at")
     private Instant updatedAt;
-
-    @OneToMany(targetEntity = LogDomain.class, cascade = {javax.persistence.CascadeType.ALL})
-    private List<LogDomain> logs;
 }

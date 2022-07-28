@@ -15,7 +15,8 @@ public class LogService implements LogServiceInterface {
 
     @Override
     public List<LogDomain> findByTaskId(Integer id) {
-        return logRepository.findLogDomainBy(id);
+//        return logRepository.findLogDomainBy(id);
+        return null;
     }
 
     @Override

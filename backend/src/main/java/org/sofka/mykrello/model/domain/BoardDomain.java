@@ -1,9 +1,7 @@
 package org.sofka.mykrello.model.domain;
 
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,18 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import lombok.Data;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
 @Table(name = "krl_board")
-public class BoardDomain implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+public class BoardDomain {
     @PreUpdate
     public void preUpdate() {
         if (this.updatedAt == null)
@@ -47,8 +41,8 @@ public class BoardDomain implements Serializable {
     @Column(name = "brd_updated_at")
     private Instant updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = ColumnForBoardDomain.class, cascade = CascadeType.ALL, mappedBy = "board")
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = ColumnForBoardDomain.class, cascade =
+            CascadeType.ALL, mappedBy = "board")
     @JsonManagedReference(value = "columnsForBoard")
-    private List<ColumnForBoardDomain> columnsForBoard = new ArrayList<>();
-
+    private List<ColumnForBoardDomain> columns = new ArrayList<>();
 }
