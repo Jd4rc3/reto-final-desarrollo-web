@@ -43,6 +43,7 @@ public class TaskDomain {
     private Instant updatedAt;
 
     @JsonManagedReference(value = "log-taks")
-    @OneToMany(fetch = FetchType.EAGER,targetEntity = LogDomain.class, cascade = CascadeType.ALL, mappedBy = "taskLog")
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = LogDomain.class, cascade = CascadeType.ALL
+            , mappedBy = "taskLog")
     List<LogDomain> history = new ArrayList<>();
 }
