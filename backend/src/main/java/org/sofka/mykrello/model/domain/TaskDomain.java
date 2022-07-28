@@ -7,11 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -45,4 +46,7 @@ public class TaskDomain implements Serializable {
 
     @Column(name = "tsk_updated_at")
     private Instant updatedAt;
+
+    @OneToMany(targetEntity = LogDomain.class, cascade = {javax.persistence.CascadeType.ALL})
+    private List<LogDomain> logs;
 }

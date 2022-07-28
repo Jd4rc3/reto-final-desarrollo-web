@@ -1,11 +1,13 @@
 package org.sofka.mykrello.model.service;
 
 import org.modelmapper.ModelMapper;
+import org.sofka.mykrello.model.domain.LogDomain;
 import org.sofka.mykrello.model.domain.TaskDomain;
 import org.sofka.mykrello.model.repository.TaskRepository;
 import org.sofka.mykrello.model.service.interfaces.TaskServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,16 +35,23 @@ public class TaskService implements TaskServiceInterface {
     }
 
     @Override
+    @Transactional
     public TaskDomain create(TaskDomain task) {
+        Integer taskId = task.getId();
+        Integer defaultColumn = task.getColumnId();
+        var log = new LogDomain(taskId, defaultColumn);
+
+        logService.create(log);
         return taskRepository.save(task);
     }
 
     @Override
-    public TaskDomain update(Integer id, TaskDomain task) {
-        var oldTask = taskRepository.findById(id).orElse(null);
+    public TaskDomain update(Integer taskId, TaskDomain task) {
+        var oldTask = taskRepository.findById(taskId).orElse(null);
 
         if (oldTask != null) {
             modelMapper.map(task, oldTask);
+            logService.update(new LogDomain(taskId, task.getColumnId()));
             return taskRepository.save(oldTask);
         }
 
@@ -70,7 +79,7 @@ public class TaskService implements TaskServiceInterface {
     }*/
 
     @Override
-    public void  delete(Integer id ) {
+    public void delete(Integer id) {
 
         taskRepository.deleteById(id);
     }
