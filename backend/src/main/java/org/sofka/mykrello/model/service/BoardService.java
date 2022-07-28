@@ -63,7 +63,7 @@ public class BoardService implements BoardServiceInterface {
     @Override
     @Transactional
     public BoardDomain delete(Integer id) {
-        var optionalBoard = boardRepository.findById(id);
+        /*var optionalBoard = boardRepository.findById(id);
         if (optionalBoard.isPresent()) {
             var board = optionalBoard.get();
             var columnsForBoard = board.getColumns();
@@ -73,9 +73,8 @@ public class BoardService implements BoardServiceInterface {
                 });
             }
             boardRepository.delete(optionalBoard.get());
-            return optionalBoard.get();
-        }
+            return optionalBoard.get();*/
+//        }
         return null;
     }
-
 }

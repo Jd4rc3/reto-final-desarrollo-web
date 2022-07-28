@@ -20,10 +20,9 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<MyResponseUtility> findAllTasksByBoardId(
-            @PathVariable("id") Integer boardId) {
+    public ResponseEntity<MyResponseUtility> findById(@PathVariable("id") Integer taskId) {
 
-        response.data = taskService.findAllTasksByBoardId(boardId);
+        response.data = taskService.findById(taskId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -36,9 +35,24 @@ public class TaskController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PatchMapping("/move/{taskId}/{newColumnId}")
+    public ResponseEntity<MyResponseUtility> moveTask(@PathVariable("taskId") Integer taskId,
+            @PathVariable("newColumnId") Integer newColumnId) {
+
+        var movedTask = taskService.moveTo(taskId, newColumnId);
+
+        if (movedTask == null) {
+            response.setFields(true, "Error");
+            return new ResponseEntity<>(response, HttpStatus.BAD_GATEWAY);
+        }
+
+        response.setFields(false, "Done moving task", movedTask);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<MyResponseUtility> updateTask(@PathVariable("id") Integer taskId,
-                                                        @RequestBody TaskDomain task) {
+            @RequestBody TaskDomain task) {
 
         var updatedValue = taskService.update(taskId, task);
 

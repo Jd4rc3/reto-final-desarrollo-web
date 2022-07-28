@@ -2,7 +2,6 @@ package org.sofka.mykrello.model.service;
 
 import org.sofka.mykrello.model.domain.LogDomain;
 import org.sofka.mykrello.model.repository.LogRepository;
-import org.sofka.mykrello.model.service.interfaces.LogServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +12,8 @@ public class LogService {
     @Autowired
     LogRepository logRepository;
 
-
-    public List<LogDomain> findByTaskId(Integer id) {
-//        return logRepository.findLogDomainBy(id);
-        return null;
+    public List<LogDomain> findByTaskId(Integer taskId) {
+        return logRepository.findAllByTaskId(taskId);
     }
 
 

@@ -1,6 +1,7 @@
 package org.sofka.mykrello.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Data
 @Entity
+@JsonIgnoreProperties(value = {"history", "column"}, ignoreUnknown = true, allowGetters = true)
 @Table(name = "krl_task")
 public class TaskDomain {
     @Id
@@ -19,10 +21,8 @@ public class TaskDomain {
     @Column(name = "tsk_id", nullable = false)
     private Integer id;
 
-    @JoinColumn(name = "clm_id_column", referencedColumnName = "clm_id")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JsonBackReference(value = "column-task")
-    private ColumnDomain column;
+    @Column(name = "clm_id_column")
+    private Integer columnId;
 
     @Column(name = "brd_id_board")
     private Integer boardId;
@@ -46,4 +46,11 @@ public class TaskDomain {
     @OneToMany(fetch = FetchType.EAGER, targetEntity = LogDomain.class, cascade = CascadeType.ALL
             , mappedBy = "taskLog")
     List<LogDomain> history = new ArrayList<>();
+
+
+    @JoinColumn(name = "clm_id_column", referencedColumnName = "clm_id", insertable = false,
+            updatable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference(value = "column-task")
+    private ColumnDomain column;
 }

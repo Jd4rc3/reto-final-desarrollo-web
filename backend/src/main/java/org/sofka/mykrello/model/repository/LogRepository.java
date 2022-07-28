@@ -9,11 +9,15 @@ import java.util.List;
 
 public interface LogRepository extends JpaRepository<LogDomain, Integer> {
 
-    @Query(value = "select clm_id_current from krl_log where tsk_id_task = ?1", nativeQuery = true)
+    @Query(value = "SELECT  clm_id_current FROM krl_log WHERE tsk_id_task = ?1 ORDER BY log_id "
+            + "DESC LIMIT 1;", nativeQuery = true)
     Integer getCurrentColumn(Integer taskId);
 
     @Modifying
-    @Query(value = "INSERT  into krl_log (tsk_id_task, clm_id_current, clm_id_previous ) values (?1,?2,?3) ", nativeQuery = true)
-    void  setNewColumns(Integer taskId, Integer current, Integer previous);
+    @Query(value = "INSERT  into krl_log (tsk_id_task, clm_id_current, clm_id_previous ) values "
+            + "(?1,?2,?3) ", nativeQuery = true)
+    void setNewColumns(Integer taskId, Integer current, Integer previous);
+
+    List<LogDomain> findAllByTaskId(Integer taskId);
 }
 

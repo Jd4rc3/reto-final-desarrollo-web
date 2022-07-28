@@ -1,7 +1,6 @@
 package org.sofka.mykrello.model.service;
 
 import org.modelmapper.ModelMapper;
-import org.sofka.mykrello.model.domain.LogDomain;
 import org.sofka.mykrello.model.domain.TaskDomain;
 import org.sofka.mykrello.model.repository.TaskRepository;
 import org.sofka.mykrello.model.service.interfaces.TaskServiceInterface;
@@ -9,11 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 public class TaskService implements TaskServiceInterface {
-
     @Autowired
     private LogService logService;
 
@@ -23,24 +19,18 @@ public class TaskService implements TaskServiceInterface {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Override
-    public List<TaskDomain> findAllTasksByBoardId(Integer idBoard) {
-        return null;
-//        return taskRepository.findAllByBoardId(idBoard);
-    }
 
     @Override
     public TaskDomain findById(Integer id) {
-        // TODO Auto-generated method stub
-        return null;
+        return taskRepository.findById(id).orElse(null);
     }
 
     @Override
     @Transactional
     public TaskDomain create(TaskDomain task) {
-        Integer taskId = task.getId();
-
         var savedTask = taskRepository.save(task);
+        var taskId = savedTask.getId();
+
         logService.create(taskId);
         return savedTask;
     }
@@ -51,36 +41,31 @@ public class TaskService implements TaskServiceInterface {
 
         if (oldTask != null) {
             modelMapper.map(task, oldTask);
-//            logService.update(new LogDomain(taskId, task.getColumnId()));
             return taskRepository.save(oldTask);
         }
 
         return null;
     }
 
- /*   private TaskDomain mapToTaskDomain(TaskDomain task, TaskDomain oldTask) {
-        var name = task.getName();
-        var description = task.getDescription();
-        var date = task.getDeliveryDate();
+    @Transactional
+    public TaskDomain moveTo(Integer taskId, Integer newColumnId) {
+        var task = taskRepository.findById(taskId).orElse(null);
 
-        if (name != null) {
-            oldTask.setName(name);
+        if (task != null) {
+            task.setColumnId(newColumnId);
+            logService.update(taskId, newColumnId);
+            var savedTask = taskRepository.save(task);
+            var updatedHistory = logService.findByTaskId(taskId);
+            savedTask.setHistory(updatedHistory);
+
+            return savedTask;
         }
 
-        if (description != null) {
-            oldTask.setDescription(description);
-        }
-
-        if (date != null) {
-            oldTask.setDeliveryDate(date);
-        }
-
-        return oldTask;
-    }*/
+        return null;
+    }
 
     @Override
     public void delete(Integer id) {
-
         taskRepository.deleteById(id);
     }
 }
