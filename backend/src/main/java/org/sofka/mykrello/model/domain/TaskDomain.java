@@ -1,19 +1,14 @@
 package org.sofka.mykrello.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -46,4 +41,8 @@ public class TaskDomain {
 
     @Column(name = "tsk_updated_at")
     private Instant updatedAt;
+
+    @JsonManagedReference(value = "log-taks")
+    @OneToMany(fetch = FetchType.EAGER,targetEntity = LogDomain.class, cascade = CascadeType.ALL, mappedBy = "taskLog")
+    List<LogDomain> history = new ArrayList<>();
 }
