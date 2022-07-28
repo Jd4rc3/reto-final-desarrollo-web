@@ -9,25 +9,29 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LogService implements LogServiceInterface {
+public class LogService {
     @Autowired
     LogRepository logRepository;
 
-    @Override
+
     public List<LogDomain> findByTaskId(Integer id) {
 //        return logRepository.findLogDomainBy(id);
         return null;
     }
 
-    @Override
-    public LogDomain create(LogDomain log) {
-        updateColumns(log, log.getCurrentId());
+
+    public LogDomain create(Integer taskId) {
+
+        LogDomain log = new LogDomain();
+        log.setTaskId(taskId);
+        log.setPreviousId(1);
+        log.setCurrentId(1);
         return logRepository.save(log);
     }
 
-    public void update(LogDomain log) {
-        updateColumns(log, log.getCurrentId());
-        logRepository.save(log);
+    public void update(Integer taskId, Integer newColum) {
+        var oldColumn = logRepository.getCurrentColumn(taskId);
+        logRepository.setNewColumns(taskId, newColum, oldColumn);
     }
 
     private void updateColumns(LogDomain log, Integer newCurrentId) {

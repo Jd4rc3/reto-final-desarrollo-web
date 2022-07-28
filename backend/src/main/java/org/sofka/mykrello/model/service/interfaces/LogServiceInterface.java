@@ -6,5 +6,5 @@ import org.sofka.mykrello.model.domain.LogDomain;
 
 public interface LogServiceInterface {
      List<LogDomain> findByTaskId(Integer id);
-     LogDomain create(LogDomain log);
+     LogDomain create();
 }

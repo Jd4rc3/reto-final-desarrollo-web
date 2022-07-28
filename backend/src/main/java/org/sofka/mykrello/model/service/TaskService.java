@@ -39,11 +39,10 @@ public class TaskService implements TaskServiceInterface {
     @Transactional
     public TaskDomain create(TaskDomain task) {
         Integer taskId = task.getId();
-//        Integer defaultColumn = task.getColumnId();
-//        var log = new LogDomain(taskId, defaultColumn);
 
-//        logService.create(log);
-        return taskRepository.save(task);
+        var savedTask = taskRepository.save(task);
+        logService.create(taskId);
+        return savedTask;
     }
 
     @Override
