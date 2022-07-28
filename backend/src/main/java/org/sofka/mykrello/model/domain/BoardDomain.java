@@ -1,5 +1,6 @@
 package org.sofka.mykrello.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
@@ -41,6 +42,8 @@ public class BoardDomain {
     @Column(name = "brd_updated_at")
     private Instant updatedAt;
 
+
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, targetEntity = ColumnForBoardDomain.class, cascade =
             CascadeType.ALL, mappedBy = "board")
     @JsonManagedReference(value = "columnsForBoard")
