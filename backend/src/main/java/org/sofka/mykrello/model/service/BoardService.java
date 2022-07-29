@@ -6,6 +6,7 @@ import org.sofka.mykrello.model.repository.BoardRepository;
 import org.sofka.mykrello.model.repository.ColumnForBoardRepository;
 import org.sofka.mykrello.model.repository.ColumnRepository;
 import org.sofka.mykrello.model.service.interfaces.BoardServiceInterface;
+import org.sofka.mykrello.utilities.exceptions.MismatchDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,14 +37,18 @@ public class BoardService implements BoardServiceInterface {
     @Transactional(readOnly = true)
     public BoardDomain findById(Integer id) {
         var board = boardRepository.findById(id);
-        return board.isPresent() ? board.get() : null;
+
+        return board.orElseThrow(() -> new MismatchDataException("Board not found with id: " + id));
     }
 
     @Override
     @Transactional
     public BoardDomain create(BoardDomain board) {
+        checkName(board);
+
         var newBoard = boardRepository.save(board);
         var columns = columnRepository.findAll();
+
         if (!columns.isEmpty()) {
             columns.forEach(column -> {
                 var columnForBoard = new ColumnForBoardDomain();
@@ -52,12 +57,15 @@ public class BoardService implements BoardServiceInterface {
                 columnForBoardRepository.save(columnForBoard);
             });
         }
+
         return newBoard;
     }
 
     @Override
     @Transactional
     public BoardDomain update(Integer id, BoardDomain board) {
+        checkId(id);
+        checkName(board);
         board.setId(id);
         return boardRepository.save(board);
     }
@@ -65,7 +73,22 @@ public class BoardService implements BoardServiceInterface {
     @Override
     @Transactional
     public void delete(Integer id) {
+        checkId(id);
+
         taskService.deleteAllByBoardId(id);
         boardRepository.deleteById(id);
+    }
+
+    public void checkId(Integer id) {
+        if (!boardRepository.existsById(id)) {
+            throw new MismatchDataException(
+                    "Board doesn't exists " + id);
+        }
+    }
+
+    private void checkName(BoardDomain board) {
+        if (board.getName().isEmpty()) {
+            throw new MismatchDataException("Board name cannot be empty");
+        }
     }
 }

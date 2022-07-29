@@ -55,7 +55,7 @@ public class TaskController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<MyResponseUtility> deleteTask(@PathVariable("id") Integer taskId) {
-        taskService.deleteAllByBoardId(taskId);
+        taskService.delete(taskId);
         response.setFields(false,"successfully deleted");
 
         return new ResponseEntity<>(response, HttpStatus.OK);
