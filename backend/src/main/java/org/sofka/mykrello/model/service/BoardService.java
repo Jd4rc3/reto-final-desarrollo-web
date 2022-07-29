@@ -3,9 +3,11 @@ package org.sofka.mykrello.model.service;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.sofka.mykrello.model.domain.BoardDomain;
+import org.sofka.mykrello.model.domain.ColumnForBoardDomain;
 import org.sofka.mykrello.model.dtos.BoardDTO;
 import org.sofka.mykrello.model.dtos.ColumnDTO;
 import org.sofka.mykrello.model.repository.BoardRepository;
+import org.sofka.mykrello.model.repository.ColumnForBoardRepository;
 import org.sofka.mykrello.model.repository.ColumnRepository;
 import org.sofka.mykrello.model.service.interfaces.BoardServiceInterface;
 import org.sofka.mykrello.utilities.exceptions.MismatchDataException;
@@ -31,8 +33,8 @@ public class BoardService implements BoardServiceInterface {
     @Autowired
     private ModelMapper modelMapper;
 
-/*    @Autowired
-    private ColumnForBoardRepository columnForBoardRepository;*/
+    @Autowired
+    private ColumnForBoardRepository columnForBoardRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -55,10 +57,7 @@ public class BoardService implements BoardServiceInterface {
 
     @Transactional
     public List<ColumnDTO> filterTaskByColumn(Integer boardId) {
-        var columns = columnRepository.findAllByBoardId(boardId);
-        List<ColumnDTO> columnDTOs = new ArrayList<>();
-
-        columns.forEach(column -> columnDTOs.add(modelMapper.map(column, ColumnDTO.class)));
+        List<ColumnDTO> columnDTOs = getColumnDTOS(boardId);
 
         columnDTOs.forEach(column -> column.setTasks(
                 taskService.findAllByBoardIdAndColumnId(boardId, column.getId())));
@@ -66,25 +65,30 @@ public class BoardService implements BoardServiceInterface {
         return columnDTOs;
     }
 
+    private List<ColumnDTO> getColumnDTOS(Integer boardId) {
+        var columns = columnRepository.findAllByBoardId(boardId);
+        List<ColumnDTO> columnDTOs = new ArrayList<>();
+
+        columns.forEach(column -> columnDTOs.add(modelMapper.map(column, ColumnDTO.class)));
+        return columnDTOs;
+    }
+
+
     @Override
     @Transactional
-    public BoardDomain create(BoardDomain board) {
+    public BoardDTO create(BoardDomain board) {
         checkName(board);
-
         var newBoard = boardRepository.save(board);
-        var columns = columnRepository.findAll();
-/*
-        if (!columns.isEmpty()) {
-            columns.forEach(column -> {
-                var columnForBoard = new ColumnForBoardDomain();
-                columnForBoard.setColumn(column);
-                columnForBoard.setBoard(newBoard);
-                columnForBoardRepository.save(columnForBoard);
-            });
-        }*/
+        var boardId = newBoard.getId();
+        BoardDTO boardDTO = modelMapper.map(newBoard, BoardDTO.class);
+        columnForBoardRepository.createColumns(boardId);
+        var columnList = getColumnDTOS(boardId);
 
-        return null;
+        boardDTO.setColumns(columnList);
+
+        return boardDTO;
     }
+
 
     @Override
     @Transactional
@@ -100,6 +104,7 @@ public class BoardService implements BoardServiceInterface {
     public void delete(Integer id) {
         checkId(id);
 
+        columnForBoardRepository.deleteAllByBoardId(id);
         taskService.deleteAllByBoardId(id);
         boardRepository.deleteById(id);
     }

@@ -33,4 +33,7 @@ public class ColumnForBoardDomain {
 
     @Column(name = "cfb_updated_at")
     private Instant updatedAt;
+
+    @Column(name = "brd_id_board")
+    private Integer boardId;
 }
