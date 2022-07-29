@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class TaskService implements TaskServiceInterface {
     @Autowired
@@ -32,6 +34,14 @@ public class TaskService implements TaskServiceInterface {
     public TaskDomain findById(Integer id) {
         return taskRepository.findById(id).orElseThrow(
                 () -> new MismatchDataException("Task not found with id: " + id));
+    }
+
+    public List<TaskDomain> findByAllBoardId(Integer boardId) {
+        return taskRepository.findAllByBoardId(boardId);
+    }
+
+    public List<TaskDomain> findAllByBoardIdAndColumnId(Integer boardId, Integer columnId) {
+        return taskRepository.findAllByBoardIdAndColumnId(boardId, columnId);
     }
 
     @Override
@@ -109,8 +119,7 @@ public class TaskService implements TaskServiceInterface {
 
     public void checkBoardId(Integer id) {
         if (!boardRepository.existsById(id)) {
-            throw new MismatchDataException(
-                    "Board doesn't exists " + id);
+            throw new MismatchDataException("Board doesn't exists " + id);
         }
     }
 

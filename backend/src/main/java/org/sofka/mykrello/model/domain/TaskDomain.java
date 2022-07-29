@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -43,13 +44,8 @@ public class TaskDomain {
     private Instant updatedAt;
 
     @JsonManagedReference(value = "log-task")
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER, targetEntity = LogDomain.class, cascade = CascadeType.ALL
             , mappedBy = "taskLog")
-    List<LogDomain> history = new ArrayList<>();
-
-    @JoinColumn(name = "clm_id_column", referencedColumnName = "clm_id", insertable = false,
-            updatable = false)
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JsonBackReference(value = "column-task")
-    private ColumnDomain column;
+    private List<LogDomain> history = new ArrayList<>();
 }

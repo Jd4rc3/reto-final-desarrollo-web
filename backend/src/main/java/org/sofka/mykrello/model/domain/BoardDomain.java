@@ -1,22 +1,15 @@
 package org.sofka.mykrello.model.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
@@ -41,10 +34,4 @@ public class BoardDomain {
 
     @Column(name = "brd_updated_at")
     private Instant updatedAt;
-
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = ColumnForBoardDomain.class, cascade =
-            CascadeType.ALL, mappedBy = "board")
-    @JsonManagedReference(value = "columnsForBoard")
-    private List<ColumnForBoardDomain> columns = new ArrayList<>();
 }

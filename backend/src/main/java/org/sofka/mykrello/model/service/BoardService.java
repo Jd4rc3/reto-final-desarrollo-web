@@ -1,9 +1,11 @@
 package org.sofka.mykrello.model.service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.sofka.mykrello.model.domain.BoardDomain;
-import org.sofka.mykrello.model.domain.ColumnForBoardDomain;
+import org.sofka.mykrello.model.dtos.BoardDTO;
+import org.sofka.mykrello.model.dtos.ColumnDTO;
 import org.sofka.mykrello.model.repository.BoardRepository;
-import org.sofka.mykrello.model.repository.ColumnForBoardRepository;
 import org.sofka.mykrello.model.repository.ColumnRepository;
 import org.sofka.mykrello.model.service.interfaces.BoardServiceInterface;
 import org.sofka.mykrello.utilities.exceptions.MismatchDataException;
@@ -11,9 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class BoardService implements BoardServiceInterface {
     @Autowired
     private BoardRepository boardRepository;
@@ -25,7 +29,10 @@ public class BoardService implements BoardServiceInterface {
     private TaskService taskService;
 
     @Autowired
-    private ColumnForBoardRepository columnForBoardRepository;
+    private ModelMapper modelMapper;
+
+/*    @Autowired
+    private ColumnForBoardRepository columnForBoardRepository;*/
 
     @Override
     @Transactional(readOnly = true)
@@ -35,10 +42,28 @@ public class BoardService implements BoardServiceInterface {
 
     @Override
     @Transactional(readOnly = true)
-    public BoardDomain findById(Integer id) {
-        var board = boardRepository.findById(id);
+    public BoardDTO findById(Integer id) {
+        checkId(id);
+        var board = boardRepository.findById(id).orElse(new BoardDomain());
+        var boardDTO = new BoardDTO();
 
-        return board.orElseThrow(() -> new MismatchDataException("Board not found with id: " + id));
+        modelMapper.map(board, boardDTO);
+
+        boardDTO.setColumns(filterTaskByColumn(id));
+        return boardDTO;
+    }
+
+    @Transactional
+    public List<ColumnDTO> filterTaskByColumn(Integer boardId) {
+        var columns = columnRepository.findAllByBoardId(boardId);
+        List<ColumnDTO> columnDTOs = new ArrayList<>();
+
+        columns.forEach(column -> columnDTOs.add(modelMapper.map(column, ColumnDTO.class)));
+
+        columnDTOs.forEach(column -> column.setTasks(
+                taskService.findAllByBoardIdAndColumnId(boardId, column.getId())));
+
+        return columnDTOs;
     }
 
     @Override
@@ -48,7 +73,7 @@ public class BoardService implements BoardServiceInterface {
 
         var newBoard = boardRepository.save(board);
         var columns = columnRepository.findAll();
-
+/*
         if (!columns.isEmpty()) {
             columns.forEach(column -> {
                 var columnForBoard = new ColumnForBoardDomain();
@@ -56,9 +81,9 @@ public class BoardService implements BoardServiceInterface {
                 columnForBoard.setBoard(newBoard);
                 columnForBoardRepository.save(columnForBoard);
             });
-        }
+        }*/
 
-        return newBoard;
+        return null;
     }
 
     @Override
@@ -81,8 +106,7 @@ public class BoardService implements BoardServiceInterface {
 
     public void checkId(Integer id) {
         if (!boardRepository.existsById(id)) {
-            throw new MismatchDataException(
-                    "Board doesn't exists " + id);
+            throw new MismatchDataException("Board doesn't exists " + id);
         }
     }
 

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<TaskDomain, Integer> {
     List<TaskDomain> findAllByBoardId(Integer idBoard);
+
+    List<TaskDomain> findAllByBoardIdAndColumnId(Integer idBoard, Integer idColumn);
 }
