@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/tasks")
 public class TaskController {
-
     @Autowired
     private MyResponseUtility response;
 
@@ -21,16 +20,14 @@ public class TaskController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<MyResponseUtility> findById(@PathVariable("id") Integer taskId) {
-
-        response.data = taskService.findById(taskId);
+        response.setFields(false, taskService.findById(taskId));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/create")
     public ResponseEntity<MyResponseUtility> createTask(@RequestBody TaskDomain task) {
-
-        response.data = taskService.create(task);
+        response.setFields(false, taskService.create(task));
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -41,11 +38,6 @@ public class TaskController {
 
         var movedTask = taskService.moveTo(taskId, newColumnId);
 
-        if (movedTask == null) {
-            response.setFields(true, "Error");
-            return new ResponseEntity<>(response, HttpStatus.BAD_GATEWAY);
-        }
-
         response.setFields(false, "Done moving task", movedTask);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -55,29 +47,17 @@ public class TaskController {
             @RequestBody TaskDomain task) {
 
         var updatedValue = taskService.update(taskId, task);
+        response.setFields(false, updatedValue);
 
-        if (updatedValue != null) {
-            response.data = updatedValue;
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
-
-        response.data = "";
-        response.error = true;
-        response.message = "Task not found";
-
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
     @DeleteMapping("/{id}")
     public ResponseEntity<MyResponseUtility> deleteTask(@PathVariable("id") Integer taskId) {
-
-        response.data = "";
-        response.error = false;
-        response.message = "successfully deleted";
         taskService.deleteAllByBoardId(taskId);
+        response.setFields(false,"successfully deleted");
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
 }

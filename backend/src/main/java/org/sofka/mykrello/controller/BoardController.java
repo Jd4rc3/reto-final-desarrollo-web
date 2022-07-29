@@ -28,33 +28,38 @@ public class BoardController {
 
     @GetMapping(path = "")
     public ResponseEntity<MyResponseUtility> index() {
-        response.data = boardService.getAll();
+        response.setFields(false, boardService.getAll());
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<MyResponseUtility> getBoardById(@PathVariable(value = "id") Integer id) {
-        response.data = boardService.findById(id);
+        response.setFields(false, boardService.findById(id));
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping(path = "")
     public ResponseEntity<MyResponseUtility> create(@RequestBody BoardDomain board) {
-        response.data = boardService.create(board);
+        response.setFields(false, boardService.create(board));
+
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<MyResponseUtility> put(@PathVariable(value = "id") Integer id,
             @RequestBody BoardDomain board) {
-        response.data = boardService.update(id, board);
+        response.setFields(false, boardService.update(id, board));
+
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<MyResponseUtility> delete(@PathVariable(value = "id") Integer id) {
-        response.data = "";
+        response.setFields(false);
         boardService.delete(id);
+
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

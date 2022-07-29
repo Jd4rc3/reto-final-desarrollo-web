@@ -1,16 +1,18 @@
 package org.sofka.mykrello.utilities;
 
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
 @Component
+@Data
 public class MyResponseUtility {
-    public Boolean error;
-    public String  message;
-    public Object  data;
+    private Boolean error;
+    private String  message;
+    private Object  data;
 
     public MyResponseUtility() {
         error = false;
-        message = "Success";
+        message = "Done";
         data = null;
     }
 
@@ -25,9 +27,15 @@ public class MyResponseUtility {
         this.message = message;
     }
 
-    public void restart() {
-        error = false;
-        message = "Success";
-        data = null;
+    public void setFields(Boolean error) {
+        this.error = error;
+        this.data = null;
+        this.message = "Done";
+    }
+
+    public void setFields(Boolean error, Object data) {
+        this.message = "Done";
+        this.data = data;
+        this.error = error;
     }
 }
