@@ -75,7 +75,7 @@ public class TaskController {
         response.data = "";
         response.error = false;
         response.message = "successfully deleted";
-        taskService.delete(taskId);
+        taskService.deleteAllByBoardId(taskId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

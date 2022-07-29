@@ -51,5 +51,4 @@ public class ColumnForBoardDomain {
 
     @Column(name = "cfb_updated_at")
     private Instant updatedAt;
-
 }

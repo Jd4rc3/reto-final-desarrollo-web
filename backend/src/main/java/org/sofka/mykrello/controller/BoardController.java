@@ -10,17 +10,16 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin(value = "*")
 @RequestMapping("/api/v1/boards")
 public class BoardController {
-
     @Autowired
     private MyResponseUtility response;
 
@@ -54,9 +53,8 @@ public class BoardController {
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<MyResponseUtility> delete(@PathVariable(value = "id") Integer id) {
-        response.data="";
+        response.data = "";
         boardService.delete(id);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-
 }

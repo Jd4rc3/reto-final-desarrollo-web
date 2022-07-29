@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyResponseUtility {
     public Boolean error;
-    public String message;
-    public Object data;
+    public String  message;
+    public Object  data;
 
     public MyResponseUtility() {
         error = false;

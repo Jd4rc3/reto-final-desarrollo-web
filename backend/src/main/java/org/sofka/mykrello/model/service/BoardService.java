@@ -1,7 +1,5 @@
 package org.sofka.mykrello.model.service;
 
-import java.util.List;
-
 import org.sofka.mykrello.model.domain.BoardDomain;
 import org.sofka.mykrello.model.domain.ColumnForBoardDomain;
 import org.sofka.mykrello.model.repository.BoardRepository;
@@ -12,9 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class BoardService implements BoardServiceInterface {
-
     @Autowired
     private BoardRepository boardRepository;
 
@@ -65,8 +64,8 @@ public class BoardService implements BoardServiceInterface {
 
     @Override
     @Transactional
-     public void  delete(Integer id) {
-        taskService.deleteAllBoardId(id);
+    public void delete(Integer id) {
+        taskService.deleteAllByBoardId(id);
         boardRepository.deleteById(id);
     }
 }

@@ -42,7 +42,6 @@ public class BoardDomain {
     @Column(name = "brd_updated_at")
     private Instant updatedAt;
 
-
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, targetEntity = ColumnForBoardDomain.class, cascade =
             CascadeType.ALL, mappedBy = "board")

@@ -5,9 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class MyKrelloApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(MyKrelloApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(MyKrelloApplication.class, args);
+    }
 }

@@ -47,7 +47,6 @@ public class TaskDomain {
             , mappedBy = "taskLog")
     List<LogDomain> history = new ArrayList<>();
 
-
     @JoinColumn(name = "clm_id_column", referencedColumnName = "clm_id", insertable = false,
             updatable = false)
     @ManyToOne(fetch = FetchType.EAGER)

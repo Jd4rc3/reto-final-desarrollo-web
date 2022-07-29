@@ -19,7 +19,6 @@ public class TaskService implements TaskServiceInterface {
     @Autowired
     private ModelMapper modelMapper;
 
-
     @Override
     public TaskDomain findById(Integer id) {
         return taskRepository.findById(id).orElse(null);
@@ -30,8 +29,10 @@ public class TaskService implements TaskServiceInterface {
     public TaskDomain create(TaskDomain task) {
         var savedTask = taskRepository.save(task);
         var taskId = savedTask.getId();
-
         logService.create(taskId);
+        var savedHistory = logService.findByTaskId(taskId);
+        savedTask.setHistory(savedHistory);
+
         return savedTask;
     }
 
@@ -65,11 +66,7 @@ public class TaskService implements TaskServiceInterface {
     }
 
     @Override
-    public void delete(Integer id) {
-        taskRepository.deleteById(id);
-    }
-
-    public  void deleteAllBoardId(Integer id){
+    public void deleteAllByBoardId(Integer id) {
         var taskBoard = taskRepository.findAllByBoardId(id);
         taskRepository.deleteAll(taskBoard);
     }
