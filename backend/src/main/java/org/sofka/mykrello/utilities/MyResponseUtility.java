@@ -3,6 +3,10 @@ package org.sofka.mykrello.utilities;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+/**
+ *@LuisaAvila @DanielArce
+ * MyResponseUtility allows you to create response objects, to give a more personalized response. *
+ */
 @Component
 @Data
 public class MyResponseUtility {
@@ -16,6 +20,11 @@ public class MyResponseUtility {
         data = null;
     }
 
+    /**
+     * @LuisaAvila @DanielArce
+     * setField generates an overload of methods to generate different objects of MyResponseUtility types and give a more personalized response.
+
+    */
     public void setFields(Boolean error, String message, Object data) {
         this.error = error;
         this.message = message;
