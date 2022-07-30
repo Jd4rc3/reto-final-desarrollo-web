@@ -5,20 +5,23 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
-
 /**
- * @LuisaAvila @DanielArce
- * ColumnForBoardRepository is an interface which inherits from the JPA repository and allows access to the methods to be consumed by the service to perform the business logic.
+ * ColumnForBoardRepository is an interface which inherits from the JPA repository and allows
+ * access to the methods to be consumed by the service to perform the business logic.
+ *
+ * @author LuisaAvila <luisaavila304@gmail.com>
  */
 public interface ColumnForBoardRepository extends JpaRepository<ColumnForBoardDomain, Integer> {
     /**
-     * @param boardId refers to the task identifier of the board to which the columns will be created.
+     * @param boardId refers to the task identifier of the board to which the columns will be
+     *                created.
      * @LuisaAvila @DanielArce
-     * @Query refers to a request to be made to the database in order to insert the column where the task is located.
+     * @Query refers to a request to be made to the database in order to insert the column where
+     * the task is located.
      */
     @Modifying
-    @Query(value = "INSERT INTO krl_column_for_board (brd_id_board, clm_id_column) VALUES(?1, 1), (?1, 2), (?1, 3)", nativeQuery = true)
+    @Query(value = "INSERT INTO krl_column_for_board (brd_id_board, clm_id_column) VALUES(?1, 1)," +
+            " (?1, 2), (?1, 3)", nativeQuery = true)
     void createColumns(Integer boardId);
 
     /**

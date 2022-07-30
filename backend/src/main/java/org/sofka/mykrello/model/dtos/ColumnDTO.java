@@ -9,6 +9,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ColumnDTO is a data transfer object that represents a column.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

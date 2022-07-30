@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * BoardController class exposes the REST API for the BoardDomain using field injection from the
+ * BoardService and custom response.
+ */
 @RestController
 @CrossOrigin(value = "*")
 @RequestMapping("/api/v1/boards")
@@ -26,13 +30,24 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
+    /**
+     * getAll endPoint returns all the boards in the database.
+     *
+     * @return ResponseEntity<List < BoardDomain>>
+     */
     @GetMapping(path = "")
-    public ResponseEntity<MyResponseUtility> index() {
+    public ResponseEntity<MyResponseUtility> getAll() {
         response.setFields(false, boardService.getAll());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * getById endPoint returns the board with the given id.
+     *
+     * @param id the id of the board to be returned.
+     * @return ResponseEntity<MyResponseUtility> the found board.
+     */
     @GetMapping(path = "/{id}")
     public ResponseEntity<MyResponseUtility> getBoardById(@PathVariable(value = "id") Integer id) {
         response.setFields(false, boardService.findById(id));
@@ -40,6 +55,12 @@ public class BoardController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * createBoard endPoint creates a new board and returns the created board.
+     *
+     * @param board the board to be created.
+     * @return ResponseEntity<MyResponseUtility> the created board inside the response.
+     */
     @PostMapping(path = "")
     public ResponseEntity<MyResponseUtility> create(@RequestBody BoardDomain board) {
         response.setFields(false, boardService.create(board));
@@ -47,16 +68,29 @@ public class BoardController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    /**
+     * updateBoard endPoint updates the board with the given id and returns the updated board.
+     *
+     * @param id    the id of the board to be updated.
+     * @param board the board to be updated.
+     * @return ResponseEntity<MyResponseUtility> the updated board inside the response.
+     */
     @PutMapping(path = "/{id}")
-    public ResponseEntity<MyResponseUtility> put(@PathVariable(value = "id") Integer id,
+    public ResponseEntity<MyResponseUtility> updateBoard(@PathVariable(value = "id") Integer id,
             @RequestBody BoardDomain board) {
         response.setFields(false, boardService.update(id, board));
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    /**
+     * deleteBoard endPoint deletes the board with the given id.
+     *
+     * @param id the id of the board to be deleted.
+     * @return ResponseEntity<MyResponseUtility> the deleted board inside the response.
+     */
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<MyResponseUtility> delete(@PathVariable(value = "id") Integer id) {
+    public ResponseEntity<MyResponseUtility> deleteBoard(@PathVariable(value = "id") Integer id) {
         response.setFields(false);
         boardService.delete(id);
 

@@ -4,8 +4,9 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 /**
- *@LuisaAvila @DanielArce
  * MyResponseUtility allows you to create response objects, to give a more personalized response. *
+ *
+ * @author LuisaAvila <luisaavila304@gmail.com>
  */
 @Component
 @Data
@@ -21,10 +22,10 @@ public class MyResponseUtility {
     }
 
     /**
-     * @LuisaAvila @DanielArce
-     * setField generates an overload of methods to generate different objects of MyResponseUtility types and give a more personalized response.
-
-    */
+     * setField generates an overload of methods to generate different objects of
+     * <p>
+     * MyResponseUtility types and give a more personalized response.
+     */
     public void setFields(Boolean error, String message, Object data) {
         this.error = error;
         this.message = message;

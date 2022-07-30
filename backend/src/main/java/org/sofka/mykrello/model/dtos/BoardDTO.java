@@ -6,6 +6,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * BoardDTO is a data transfer object that represents a board.
+ */
 @Data
 public class BoardDTO {
     private Integer id;
