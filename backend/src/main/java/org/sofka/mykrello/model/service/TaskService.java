@@ -66,7 +66,7 @@ public class TaskService implements TaskServiceInterface {
     @Transactional
     public TaskDomain create(TaskDomain task) {
         checkBoardId(task.getBoardId());
-        checkName(task);
+        checkFields(task);
 
         var savedTask = taskRepository.save(task);
         var taskId = savedTask.getId();
@@ -87,7 +87,7 @@ public class TaskService implements TaskServiceInterface {
     @Override
     public TaskDomain update(Integer taskId, TaskDomain task) {
         checkId(taskId);
-        checkName(task);
+        checkFields(task);
 
         var oldTask = taskRepository.findById(taskId).orElse(null);
 
@@ -159,15 +159,42 @@ public class TaskService implements TaskServiceInterface {
     }
 
     /**
-     * check if the name of the task is not null or empty.
+     * check if the name or description of the task is not null or empty.
      *
      * @param task the task to check.
      */
-    private void checkName(TaskDomain task) {
-        if (task.getName().isEmpty()) {
-            throw new MismatchDataException("Task name cannot be empty");
+    private void checkFields(TaskDomain task) {
+        if (checkName(task) || checkDescription(task)) {
+            return;
         }
+
+        throw new MismatchDataException("Please fill name or description");
     }
+
+    /**
+     * check if the name of the task is not null or empty.
+     *
+     * @param task the task to check.
+     * @return true if the name is filled
+     */
+    private Boolean checkName(TaskDomain task) {
+        var name = task.getName();
+
+        return name != null && !name.isEmpty();
+    }
+
+    /**
+     * check if the description of the task is not null or empty.
+     *
+     * @param task the task to check.
+     * @return true if the description is filled
+     */
+    private Boolean checkDescription(TaskDomain task) {
+        var description = task.getDescription();
+
+        return description != null && !description.isEmpty();
+    }
+
 
     /**
      * check if the board id exists
