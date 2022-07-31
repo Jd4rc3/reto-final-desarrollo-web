@@ -11,7 +11,7 @@ export class Card {
         this.button1 = new Button("🗑", "danger", ButtonsHandler.buttonHandler);
         this.button2 = new Button("📝", "info", ButtonsHandler.buttonHandler, [{
             name: "data-bs-toggle", value: "modal"
-        }, {name: "data-bs-target", value: "#update-board-modal"},]);
+        }, {name: "data-bs-target", value: "#update-board-modal"}, {name: 'id', value: 'updateBoardButton'}]);
     }
 
     drawCard() {

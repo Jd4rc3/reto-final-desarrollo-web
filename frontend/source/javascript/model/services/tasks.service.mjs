@@ -11,6 +11,10 @@ export class TasksService {
         return DataSender.sendData(`${TasksService.BackendURL}/tasks`, {columnId: 1, ...task}, "POST");
     }
 
+    static move(taskId, columnId) {
+        return DataSender.sendData(`${TasksService.BackendURL}/tasks/move/${taskId}/${columnId}`, {}, "PATCH");
+    }
+
     static update(id, task) {
         return DataSender.sendData(`${TasksService.BackendURL}/tasks/${id}`, task, "PUT");
     }
@@ -50,6 +54,17 @@ export class TasksService {
         }
 
         const data = await this.update(id, {name, description, deliveryDate});
+
+        if (!data.error) {
+            window.location.reload();
+            return;
+        }
+
+        alert(data.message);
+    }
+
+    static async moveTask(id, columnId) {
+        const data = await this.move(id, columnId);
 
         if (!data.error) {
             window.location.reload();

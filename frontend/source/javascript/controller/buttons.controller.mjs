@@ -23,6 +23,12 @@ export class ButtonsHandler {
             return;
         }
 
+        if (button.innerHTML === "🔙" || button.innerHTML === "🔜") {
+            const newColumnId = button.value;
+            const taskId = button.parentElement.id.split('-')[1];
+            await TasksService.moveTask(taskId,newColumnId);
+        }
+
         if (button.innerHTML === "New Task") {
             document.querySelector(".modal-title").innerHTML = "New Task";
             document.querySelector("#modal-footer-button").innerHTML = "Create task";
@@ -37,6 +43,12 @@ export class ButtonsHandler {
             TasksService.fillFields(taskId);
             document.querySelector(".modal-title").innerHTML = "EditTask";
             document.querySelector("#modal-footer-button").innerHTML = "Edit task";
+            return;
+        }
+
+        if (button.id === "updateBoardButton") {
+            document.querySelector(".modal-title").innerHTML = "Update Board";
+            document.querySelector("#modal-footer-button").innerHTML = "Edit board";
             return;
         }
 
@@ -74,7 +86,7 @@ export class ButtonsHandler {
             return;
         }
 
-        if (button.innerHTML === "Edit") {
+        if (button.innerHTML === "Edit board") {
             await BoardsService.updateBoard();
         }
     }
