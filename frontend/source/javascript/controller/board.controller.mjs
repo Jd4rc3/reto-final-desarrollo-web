@@ -4,6 +4,9 @@ import { BoardView } from "../view/boardView.mjs";
 import { BoardsService } from "../model/services/boards.service.mjs";
 import { getBoardIdFromURL } from "../config.mjs";
 
+/**
+ * @class BoardController - Controller for the board view
+ */
 export class BoardController {
   constructor() {}
 

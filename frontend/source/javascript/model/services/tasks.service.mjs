@@ -55,7 +55,6 @@ export class TasksService {
     });
 
     if (!data.error) {
-      alert(data.message);
       window.location.reload();
       return;
     }
