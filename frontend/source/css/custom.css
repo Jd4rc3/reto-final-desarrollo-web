@@ -92,6 +92,8 @@
   grid-column: 1/2;
   grid-row: 4/5;
   text-align: center;
+  height: 5.1rem;
+  overflow: scroll;
 }
 
 .buttons-container {
