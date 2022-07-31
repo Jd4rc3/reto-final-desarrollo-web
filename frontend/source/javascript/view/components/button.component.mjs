@@ -1,3 +1,6 @@
+/**
+ * Button class represents a button and its properties.
+ */
 export class Button {
   constructor(text, color, eventListenner = null, attributes = []) {
     this.text = text;
@@ -6,6 +9,10 @@ export class Button {
     this.attributes = attributes;
   }
 
+  /**
+   * @method drawButton - Creates a button with the given text and attributes
+   * @returns {HTMLButtonElement} - The button
+   */
   buildButton() {
     const button = document.createElement("button");
     button.classList.add("btn", "btn-" + this.color);
