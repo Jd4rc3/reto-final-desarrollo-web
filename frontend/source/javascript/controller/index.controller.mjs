@@ -1,32 +1,20 @@
 "use strict";
 
-// Services
-import { MyUsersService } from "../model/services/my-users.service.mjs";
-
-// Views
-import {IndexView} from "../view/index.view.mjs";
+import {BoardsService} from "../model/services/boards.service.mjs";
+import {BoardsView} from "../view/boards.view.mjs";
 
 class IndexController {
-  #privateView;
-  #privateMyUsersService;
+    #BoardService
 
-  constructor() {
-    const headerData = [
-      "nombre",
-      "apellidos",
-      "correo",
-      "teléfono",
-      "creado",
-      "acciones",
-    ];
-    this.#privateView = new IndexView(headerData);
-    this.#privateMyUsersService = new MyUsersService();
-  }
+    constructor() {
+        this.#BoardService = new BoardsService();
+    }
 
-  async init() {
-    // this.#privateView.Data = await this.#privateMyUsersService.getUsers();
-    // this.#privateView.init();
-  }
+    async init() {
+        const boards = await this.#BoardService.getAllBoards();
+        const boardsView = new BoardsView(boards);
+        console.log(await boardsView.render());
+    }
 }
 
 export const index = new IndexController();
