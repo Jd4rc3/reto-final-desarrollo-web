@@ -53,11 +53,3 @@ export class ColumnModel {
         return this.#name;
     }
 }
-
-// {
-//         "id": 1,
-//         "name": "Por realizar",
-//         "createdAt": "2022-07-30T06:15:19Z",
-//         "updatedAt": null,
-//         "tasks": []
-//     },

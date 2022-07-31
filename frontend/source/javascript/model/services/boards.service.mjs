@@ -20,8 +20,8 @@ export class BoardsService {
      *
      * @returns {Promise<*>} response
      */
-    async getAllBoards() {
-        const board = await DataSender.getData(`${this.#BackendURL}/boards`);
+    static async getAllBoards() {
+        const board = await DataSender.getData(`${BoardsService.BackendURL}/boards`);
         const {data} = board;
 
         return data.map((board) => new BoardModel(board));

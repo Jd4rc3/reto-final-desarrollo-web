@@ -57,6 +57,7 @@ export class Modal {
 
         const form = document.createElement("input");
         form.setAttribute("type", "text");
+        form.setAttribute("placeHolder", "Name");
         form.id = "boardNameToEdit";
 
         modalBody.append(form);
@@ -80,8 +81,13 @@ export class Modal {
     }
 
     static cleanInput() {
-        const input = document.querySelector("#boardNameToEdit");
-        input.value = "";
+        document.querySelector("#boardNameToEdit").value = "";
+    }
+
+    static cleanAllInputs() {
+        document.querySelector("#boardNameToEdit").value = "";
+        document.querySelector("#description").value = "";
+        document.querySelector("#deliveryDate").value = "";
     }
 
     static getInputValue() {
@@ -99,7 +105,6 @@ export class Modal {
         alert("Please type something!");
         return true;
     }
-
 }
 
 export function toggleModal() {

@@ -1,0 +1,30 @@
+.column{
+    border: #000000 1px solid;
+    width: 100%;
+    float: left;
+    padding: 10px;
+}
+
+.task{
+    border: #000000 1px solid;
+    width: 100%;
+    float: left;
+    padding: 10px;
+}
+
+.log{
+    border: #000000 1px solid;
+    width: 100%;
+    float: left;
+    padding: 10px;
+}
+
+#boardNameToEdit{
+    display: block;
+    margin-bottom: 3%;
+}
+
+#description{
+    display: block;
+    margin-bottom: 3%;
+}

@@ -1,13 +1,14 @@
 "use strict";
 
-import {BoardsService} from "../model/services/boards.service.mjs";
 import {BoardView} from "../view/boardView.mjs";
+import {BoardsService} from "../model/services/boards.service.mjs";
+import {getBoardIdFromURL} from "../config.mjs";
 
-class BoardController {
-    #BoardService
+
+
+export class BoardController {
 
     constructor() {
-        this.#BoardService = new BoardsService();
     }
 
     async init() {
@@ -16,13 +17,12 @@ class BoardController {
         await boardView.render();
     }
 
-    getBoard() {
-        const URL = new URLSearchParams(window.location.search);
-        const id = parseInt(URL.get('id'))
-        return this.#BoardService.getBoardById(id)
+    async getBoard() {
+        const boardService = new BoardsService();
+        const id = getBoardIdFromURL();
+        return boardService.getBoardById(id)
     }
 }
 
 const board = new BoardController();
-board.init();
-
+await board.init();

@@ -2,6 +2,9 @@
  * Task model class represents a task and its fields which can be manipulated.
  */
 import {HistoryModel} from "./history.model.mjs";
+import {toggleModal} from "../view/modal.mjs";
+import {ButtonsHandler} from "../controller/buttons.controller.mjs";
+import {Button} from "../view/components/button.component.mjs";
 
 export class TaskModel {
     #id;
@@ -34,11 +37,14 @@ export class TaskModel {
 
     drawTask() {
         const container = document.createElement('div');
+        const {editButton, deleteButton, backButton, nextButton} = this.getButtons();
+
         const taskHistory = document.createElement('div');
         const description = this.#description ? this.#description : "";
         const deliveryDate = this.#deliveryDate ? this.#deliveryDate : "";
 
         container.classList.add('task');
+        container.id = `task-${this.#id}`
         taskHistory.classList.add('task-history');
         container.innerHTML = `
             <div class="task-name">${this.#name}</div>
@@ -50,33 +56,57 @@ export class TaskModel {
             taskHistory.append(row.drawHistory())
         });
 
-        container.append(taskHistory);
+        container.append(taskHistory, editButton, deleteButton, backButton, nextButton);
 
         return container;
+    }
+
+    getButtons() {
+        const backButton = this.handleBackButton();
+        const nextButton = this.handleNextButton();
+
+        const editButton = new Button("📝", "info", ButtonsHandler.buttonHandler, [{
+            name: "data-bs-toggle", value: "modal"
+        }, {name: "data-bs-target", value: "#update-board-modal"}, {name: "id", value: "editTask"}]).buildButton();
+
+        const deleteButton = new Button("🗑", "danger", ButtonsHandler.buttonHandler, [{
+            name: 'id', value: 'deleteTask'
+        }]).buildButton();
+
+        return {editButton, deleteButton, backButton, nextButton};
+    }
+
+    handleNextButton() {
+        let nextButton;
+        if (this.#columnId === 3) {
+            nextButton = new Button("🔜", "info", ButtonsHandler.buttonHandler, [{
+                name: 'disabled', value: 'true'
+            }]).buildButton();
+        } else {
+            nextButton = new Button("🔜", "info", ButtonsHandler.buttonHandler, [{
+                name: 'value', value: `${this.#columnId + 1}`
+            }]).buildButton();
+        }
+
+        return nextButton;
+    }
+
+    handleBackButton() {
+        let backButton;
+        if (this.#columnId === 1) {
+            backButton = new Button("🔙", "info", ButtonsHandler.buttonHandler, [{
+                name: 'disabled', value: 'true'
+            }]).buildButton();
+        } else {
+            backButton = new Button("🔙", "info", ButtonsHandler.buttonHandler, [{
+                name: 'value', value: `${this.#columnId - 1}`
+            }]).buildButton();
+        }
+
+        return backButton;
     }
 
     getName() {
         return this.#name;
     }
 }
-
-/*
-{
-    "id": 5,
-    "columnId": 1,
-    "boardId": 4,
-    "name": "aaaaaaaaaaaaaaaaaaaaaaaa",
-    "description": null,
-    "deliveryDate": null,
-    "createdAt": "2022-07-30T02:48:23.778988684Z",
-    "updatedAt": null,
-    "history": [
-    {
-        "id": 4,
-        "taskId": 5,
-        "previousId": 1,
-        "currentId": 1,
-        "createdAt": "2022-07-30T02:48:23.827993114Z"
-    }
-]
-}*/
