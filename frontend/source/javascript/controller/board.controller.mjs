@@ -1,27 +1,23 @@
 "use strict";
 
-import {BoardView} from "../view/boardView.mjs";
-import {BoardsService} from "../model/services/boards.service.mjs";
-import {getBoardIdFromURL} from "../config.mjs";
-
-
+import { BoardView } from "../view/boardView.mjs";
+import { BoardsService } from "../model/services/boards.service.mjs";
+import { getBoardIdFromURL } from "../config.mjs";
 
 export class BoardController {
+  constructor() {}
 
-    constructor() {
-    }
+  async init() {
+    const board = await this.getBoard();
+    const boardView = new BoardView(board);
+    await boardView.render();
+  }
 
-    async init() {
-        const board = await this.getBoard();
-        const boardView = new BoardView(board);
-        await boardView.render();
-    }
-
-    async getBoard() {
-        const boardService = new BoardsService();
-        const id = getBoardIdFromURL();
-        return boardService.getBoardById(id)
-    }
+  async getBoard() {
+    const boardService = new BoardsService();
+    const id = getBoardIdFromURL();
+    return boardService.getBoardById(id);
+  }
 }
 
 const board = new BoardController();
