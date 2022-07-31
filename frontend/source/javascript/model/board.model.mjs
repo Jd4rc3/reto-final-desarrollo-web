@@ -19,9 +19,11 @@ export class BoardModel {
         this.#createdAt = createdAt;
         this.#updatedAt = updatedAt;
 
-        columns.forEach(column => {
-            this.#columns.push(new ColumnModel(column));
-        })
+        if (columns) {
+            columns.forEach(column => {
+                this.#columns.push(new ColumnModel(column));
+            })
+        }
     }
 
     drawBoard() {
@@ -82,33 +84,3 @@ export class BoardModel {
         this.#columns = value;
     }
 }
-
-// {
-//     "id": 3,
-//     "name": "nuevo",
-//     "createdAt": "2022-07-30T01:45:38Z",
-//     "updatedAt": null,
-//     "columns": [
-//     {
-//         "id": 1,
-//         "name": "Por realizar",
-//         "createdAt": "2022-07-30T06:15:19Z",
-//         "updatedAt": null,
-//         "tasks": []
-//     },
-//     {
-//         "id": 2,
-//         "name": "En progreso",
-//         "createdAt": "2022-07-30T06:15:19Z",
-//         "updatedAt": null,
-//         "tasks": []
-//     },
-//     {
-//         "id": 3,
-//         "name": "Terminado",
-//         "createdAt": "2022-07-30T06:15:19Z",
-//         "updatedAt": null,
-//         "tasks": []
-//     }
-// ]
-// }

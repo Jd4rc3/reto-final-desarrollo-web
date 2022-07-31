@@ -12,20 +12,15 @@ class BoardController {
 
     async init() {
         const board = await this.getBoard();
-        console.log(board)
         const boardView = new BoardView(board);
         await boardView.render();
     }
 
-    async getBoard() {
+
+    getBoard() {
         const URL = new URLSearchParams(window.location.search);
         const id = parseInt(URL.get('id'))
-        try {
-            const board = await this.#BoardService.getBoard(id);
-            // board.
-        } catch (error) {
-            alert(error);
-        }
+        return this.#BoardService.getBoardById(id)
     }
 }
 

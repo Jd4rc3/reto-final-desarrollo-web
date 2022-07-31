@@ -32,6 +32,12 @@ export class BoardsService {
      */
     async getBoardById(id) {
         const board = await DataSender.getData(`${this.#BackendURL}/boards/${id}`);
+
+        if (board.error) {
+            alert(board.message);
+            window.location.href = 'index.html'
+        }
+
         return new BoardModel(board.data);
     }
 
