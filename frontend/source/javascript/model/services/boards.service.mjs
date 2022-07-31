@@ -21,7 +21,7 @@ export class BoardsService {
         const board = await DataSender.getData(`${this.#BackendURL}/boards`);
         const {data} = board;
 
-        return data.map(board => new BoardModel(board.id, board.name, board.createdAt, board.updatedAt, board.columns))
+        return data.map(board => new BoardModel(board))
     }
 
     /**
@@ -31,7 +31,8 @@ export class BoardsService {
      * @returns {Promise<*>}    response
      */
     async getBoardById(id) {
-        return await DataSender.getData(`${this.#BackendURL}/boards/${id}`);
+        const board = await DataSender.getData(`${this.#BackendURL}/boards/${id}`);
+        return new BoardModel(board.data);
     }
 
     /**
@@ -51,7 +52,8 @@ export class BoardsService {
      * @returns {Promise<*>} response
      */
     async createBoard(data) {
-        return await DataSender.sendData(`${this.#BackendURL}/boards`, data);
+        const board = await DataSender.sendData(`${this.#BackendURL}/boards`, data);
+        return new BoardModel(board.data);
     }
 
     /**
@@ -62,6 +64,7 @@ export class BoardsService {
      * @returns {Promise<*>} response
      */
     async updateBoard(id, data) {
-        return await DataSender.sendData(`${this.#BackendURL}/boards/${id}`, data, 'PUT');
+        const board = DataSender.sendData(`${this.#BackendURL}/boards/${id}`, data, 'PUT');
+        return new BoardModel(board.data);
     }
 }

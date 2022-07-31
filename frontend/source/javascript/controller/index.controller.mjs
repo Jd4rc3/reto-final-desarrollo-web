@@ -1,7 +1,7 @@
 "use strict";
 
 import {BoardsService} from "../model/services/boards.service.mjs";
-import {BoardsView} from "../view/boards.view.mjs";
+import {IndexView} from "../view/indexView.mjs";
 
 class IndexController {
     #BoardService
@@ -12,8 +12,8 @@ class IndexController {
 
     async init() {
         const boards = await this.#BoardService.getAllBoards();
-        const boardsView = new BoardsView(boards);
-        console.log(await boardsView.render());
+        const boardsView = new IndexView(boards);
+        await boardsView.render()
     }
 }
 
