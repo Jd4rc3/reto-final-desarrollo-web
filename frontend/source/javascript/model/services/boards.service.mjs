@@ -1,7 +1,8 @@
 import {DataSender} from "./sendData.mjs";
 import {Config} from "../../config.mjs";
 import {BoardModel} from "../board.model.mjs";
-import {toggleModal} from "../../view/modal.mjs";
+import {Modal, toggleModal} from "../../view/modal.mjs";
+import {Card} from "../../view/components/card.component.mjs";
 
 /**
  * Board service to handle all the CRUD operations for the boards.
@@ -59,8 +60,8 @@ export class BoardsService {
      * @param data {object} board data
      * @returns {Promise<*>} response
      */
-    async createBoard(data) {
-        const board = await DataSender.sendData(`${this.#BackendURL}/boards`, data);
+    static async createBoardPost(data) {
+        const board = await DataSender.sendData(`${BoardsService.BackendURL}/boards`, {name: data});
         return new BoardModel(board.data);
     }
 
@@ -72,9 +73,49 @@ export class BoardsService {
      * @returns {Promise<*>} response
      */
     static updateBoardName(id, newName) {
-        console.log(id)
         const BackedURL = Config.BackendURL;
 
         return DataSender.sendData(`${BackedURL}/boards/${id}`, {name: newName}, "PUT");
+    }
+
+    static async createBoard() {
+        const name = document.querySelector("#boardNameToEdit").value;
+        let board;
+
+        if (!await Modal.isEmpty()) {
+            board = await BoardsService.createBoardPost(name);
+
+            if (!board.error) {
+                const newBoard = new Card(board);
+                newBoard.newCard();
+                Modal.cleanInput();
+                toggleModal();
+                return;
+            }
+
+            alert(board.message);
+            toggleModal();
+        }
+    }
+
+    static async updateBoard() {
+        const id = localStorage.getItem("boardId");
+        const name = document.querySelector("#boardNameToEdit").value;
+        let board;
+
+        if (!await Modal.isEmpty()) {
+            board = await BoardsService.updateBoardName(id, name);
+
+            if (!board.error) {
+                const boardContainer = document.querySelector(`#board-${id}`);
+                boardContainer.childNodes[0].textContent = name;
+                Modal.cleanInput();
+                toggleModal();
+                return;
+            }
+
+            alert(board.message);
+            toggleModal();
+        }
     }
 }

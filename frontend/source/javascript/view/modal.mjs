@@ -1,4 +1,3 @@
-import {BoardsService} from "../model/services/boards.service.mjs";
 import {ButtonsHandler} from "../controller/buttons.controller.mjs";
 
 export class Modal {
@@ -79,6 +78,28 @@ export class Modal {
         modalFooter.append(button);
         return modalFooter;
     }
+
+    static cleanInput() {
+        const input = document.querySelector("#boardNameToEdit");
+        input.value = "";
+    }
+
+    static getInputValue() {
+        const input = document.querySelector("#boardNameToEdit");
+        return input.value;
+    }
+
+    static async isEmpty() {
+        const data = Modal.getInputValue();
+
+        if (data.length > 0) {
+            return false;
+        }
+
+        alert("Please type something!");
+        return true;
+    }
+
 }
 
 export function toggleModal() {

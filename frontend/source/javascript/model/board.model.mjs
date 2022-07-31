@@ -83,4 +83,9 @@ export class BoardModel {
     setColumns(value) {
         this.#columns = value;
     }
+
+    static updateLocalBoard(id, data) {
+        const boardContainer = document.querySelector(`#board-${id}`);
+        boardContainer.childNodes[0].textContent = data;
+    }
 }

@@ -2,7 +2,8 @@ export class FormularioUsurio {
 
     #privateFormulario;
 
-    constructor() { }
+    constructor() {
+    }
 
     get(formularioSubmit, data) {
         this.#privateGenerateFormulario(formularioSubmit, data);

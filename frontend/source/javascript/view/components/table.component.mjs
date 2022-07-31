@@ -1,4 +1,4 @@
-import { Config } from "../../config.mjs";
+import {Config} from "../../config.mjs";
 
 export class Table {
 

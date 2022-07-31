@@ -1,7 +1,6 @@
 /**
  * History Model is a log of all movements of the task
  */
-import {ColumnModel} from "./column.model.mjs";
 
 export class HistoryModel {
     #id;
