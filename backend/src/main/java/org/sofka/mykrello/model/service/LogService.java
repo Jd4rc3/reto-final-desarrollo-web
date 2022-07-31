@@ -10,9 +10,14 @@ import java.util.List;
 
 /**
  * LogService class to handle all the logic for the LogDomain.
+ *
+ * @author JuanDanielArce <jdarce91@misena.edu.co>
  */
 @Service
 public class LogService implements LogServiceInterface {
+    /**
+     * Log repository bean to handle all the logic for the LogDomain.
+     */
     @Autowired
     LogRepository logRepository;
 

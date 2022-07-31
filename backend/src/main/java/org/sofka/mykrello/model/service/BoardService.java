@@ -19,22 +19,39 @@ import java.util.List;
 
 /**
  * board service handle all the logic for the board domain.
+ *
+ * @author LuisaAvila <luisaavila304@gmail.com>
  */
 @Service
 @Slf4j
 public class BoardService implements BoardServiceInterface {
+    /**
+     * board repository bean to handle all the logic for the board domain.
+     */
     @Autowired
     private BoardRepository boardRepository;
 
+    /**
+     * column repository bean to serialize the board domain.
+     */
     @Autowired
     private ColumnRepository columnRepository;
 
+    /**
+     * Task service bean to serialize the whole board
+     */
     @Autowired
     private TaskService taskService;
 
+    /**
+     * model mapper bean to serialize just non null fields.
+     */
     @Autowired
     private ModelMapper modelMapper;
 
+    /**
+     * column for board repository bean to serialize the board domain.
+     */
     @Autowired
     private ColumnForBoardRepository columnForBoardRepository;
 

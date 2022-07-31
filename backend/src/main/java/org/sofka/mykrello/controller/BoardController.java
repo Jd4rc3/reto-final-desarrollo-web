@@ -19,14 +19,22 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * BoardController class exposes the REST API for the BoardDomain using field injection from the
  * BoardService and custom response.
+ *
+ * @author LuisaAvila <luisaavila304@gmail.com>
  */
 @RestController
 @CrossOrigin(value = "*")
 @RequestMapping("/api/v1/boards")
 public class BoardController {
+    /**
+     * Response object to handle same responses.
+     */
     @Autowired
     private MyResponseUtility response;
 
+    /**
+     * BoardService object to handle the business logic.
+     */
     @Autowired
     private BoardService boardService;
 

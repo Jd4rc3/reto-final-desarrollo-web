@@ -13,6 +13,8 @@ import java.time.Instant;
 
 /**
  * Board domain class is used to represent a board in the database.
+ *
+ * @author JuanDanielArce <jdarce91@misena.edu.co>
  */
 @Data
 @Entity

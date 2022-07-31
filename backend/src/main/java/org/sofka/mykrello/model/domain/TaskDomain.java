@@ -21,6 +21,8 @@ import java.util.List;
 
 /**
  * TaskDomain is a domain class that represents a task
+ *
+ * @author JuanDanielArce <jdarce91@misena.edu.co>
  */
 @Data
 @Entity

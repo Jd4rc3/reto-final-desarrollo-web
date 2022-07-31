@@ -15,21 +15,38 @@ import java.util.List;
 
 /**
  * TaskService class to handle all the logic for the TaskDomain.
+ *
+ * @author LuisaAvila <luisaavila304@gmail.com>
  */
 @Service
 public class TaskService implements TaskServiceInterface {
+    /**
+     * Log service bean to handle logs in task transitions.
+     */
     @Autowired
     private LogService logService;
 
+    /**
+     * Task repository bean to handle all the logic for the TaskDomain.
+     */
     @Autowired
     private TaskRepository taskRepository;
 
+    /**
+     * Model mapper bean to map objects with null fields
+     */
     @Autowired
     private ModelMapper modelMapper;
 
+    /**
+     * Board repository bean to check if board  exists.
+     */
     @Autowired
     private BoardRepository boardRepository;
 
+    /**
+     * Column repository bean to check if column exists.
+     */
     @Autowired
     private ColumnRepository columnRepository;
 

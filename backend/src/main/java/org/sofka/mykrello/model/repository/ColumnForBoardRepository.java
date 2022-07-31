@@ -13,11 +13,10 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface ColumnForBoardRepository extends JpaRepository<ColumnForBoardDomain, Integer> {
     /**
-     * @param boardId refers to the task identifier of the board to which the columns will be
-     *                created.
-     * @LuisaAvila @DanielArce
-     * @Query refers to a request to be made to the database in order to insert the column where
-     * the task is located.
+     * create a new column for board in the database.
+     *
+     * @param boardId refers to the board to which the columns will be created.
+     * @author LuisaAvila <luisaavila304@gmail.com>
      */
     @Modifying
     @Query(value = "INSERT INTO krl_column_for_board (brd_id_board, clm_id_column) VALUES(?1, 1)," +
@@ -26,10 +25,9 @@ public interface ColumnForBoardRepository extends JpaRepository<ColumnForBoardDo
 
     /**
      * @param boardId refers to the identifier of the table to be deleted
-     * @LuisaAvila @DanielArce
+     * @author LuisaAvila <luisaavila304@gmail.com>
      * deleteAllBoardId deletes all columns belonging to the selected board
      */
-
     @Modifying
     void deleteAllByBoardId(Integer boardId);
 

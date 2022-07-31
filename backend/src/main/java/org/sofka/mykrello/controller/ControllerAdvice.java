@@ -11,9 +11,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 /**
  * ControllerAdvice class is used to handle exceptions thrown by the both services with custom
  * response field injection.
+ *
+ * @author LuisaAvila <luisaavila304@gmail.com>
  */
 @RestControllerAdvice
 public class ControllerAdvice {
+    /**
+     * Response object to handle same responses.
+     */
     @Autowired
     MyResponseUtility response;
 

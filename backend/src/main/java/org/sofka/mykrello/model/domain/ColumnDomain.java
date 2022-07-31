@@ -14,6 +14,8 @@ import java.time.Instant;
 
 /**
  * Column domain is a domain class that represents a column in a board.
+ *
+ * @author JuanDanielArce <jdarce91@misena.edu.co>
  */
 @Data
 @Entity

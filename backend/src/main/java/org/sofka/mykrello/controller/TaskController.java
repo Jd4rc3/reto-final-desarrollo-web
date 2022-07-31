@@ -21,14 +21,22 @@ import org.springframework.web.bind.annotation.RestController;
  * TaskController is a class that allows to organize the actions that the program will do, this
  * through the path or endpoint, and communicates with the service consuming the repository.
  * see is injected MyResponseUtility and TaskService
+ *
+ * @author JuanDanielArce <jdarce91@misena.edu.co>
  */
 @CrossOrigin(value = "*")
 @RestController
 @RequestMapping("/api/v1/tasks")
 public class TaskController {
+    /**
+     * Response object to handle same responses.
+     */
     @Autowired
     private MyResponseUtility response;
 
+    /**
+     * TaskService object to handle the business logic.
+     */
     @Autowired
     private TaskService taskService;
 

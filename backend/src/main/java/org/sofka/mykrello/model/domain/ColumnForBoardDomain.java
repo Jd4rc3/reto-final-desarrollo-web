@@ -13,6 +13,8 @@ import java.time.Instant;
 
 /**
  * Column for board domain is used as a link between a board and a column.
+ *
+ * @author JuanDanielArce <jdarce91@misena.edu.co>
  */
 @Data
 @Entity
