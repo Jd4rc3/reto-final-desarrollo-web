@@ -57,7 +57,7 @@ public class TaskController {
      * @return an object of type ResponseEntity with an object of type task that has been created
      * and a status of type HTTP
      */
-    @PostMapping("/create")
+    @PostMapping("")
     public ResponseEntity<MyResponseUtility> createTask(@RequestBody TaskDomain task) {
         response.setFields(false, taskService.create(task));
 
