@@ -26,6 +26,10 @@ export class ColumnModel {
     this.saveColumnNames();
   }
 
+  /**
+   * Build all containers for the column and its children.
+   * @returns {HTMLDivElement} column container
+   */
   drawColumn() {
     const container = document.createElement("div");
     const tasks = document.createElement("div");
@@ -46,10 +50,17 @@ export class ColumnModel {
     return container;
   }
 
+  /**
+   * @method saveColumnNames - Saves the column names in local storage
+   */
   saveColumnNames() {
     localStorage.setItem(this.#id, this.#name);
   }
 
+    /**
+     * @method getColumnName - Gets the name of the column to which the task belongs
+     * @returns {*} - The name of the column
+     */
   getName() {
     return this.#name;
   }
