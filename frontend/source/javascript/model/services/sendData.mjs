@@ -10,11 +10,12 @@ export class DataSender {
      *
      * @param url {string} endpoint url
      * @param data {object} data to send
+     * @param METHOD {string} method to use
      * @returns {Promise<any>} response
      */
-    static async postData(url = '', data = {}) {
+    static async sendData(url = '', data = {}, METHOD = 'POST') {
         const response = await fetch(url, {
-            method: 'POST', mode: 'cors', cache: 'no-cache', credentials: 'same-origin', headers: {
+            method: METHOD, mode: 'cors', cache: 'no-cache', credentials: 'same-origin', headers: {
                 'Content-Type': 'application/json'
             }, redirect: 'follow', referrerPolicy: 'no-referrer', body: JSON.stringify(data)
         });
