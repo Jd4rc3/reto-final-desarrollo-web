@@ -1,41 +1,55 @@
+import { Card } from "./components/card.component.mjs";
+import { Button } from "./components/button.component.mjs";
+import { ButtonsHandler } from "../controller/buttons.controller.mjs";
+
 /**
  * view for main view of boards
  */
 export class IndexView {
-    #data
+  #data;
+  #button;
 
-    constructor(boards) {
-        this.#data = boards
-    }
+  constructor(boards) {
+    const attributes = [
+      { name: "data-bs-toggle", value: "modal" },
+      { name: "data-bs-target", value: "#update-board-modal" },
+    ];
 
-    async render() {
-        const boards = [...this.#data];
-        const container = document.querySelector('#container')
+    this.#button = new Button(
+      "New Board",
+      "success",
+      ButtonsHandler.buttonHandler,
+      attributes
+    );
 
-        boards.forEach(board => {
-            const createdBoard = this.createBoard(board);
-            container.append(createdBoard)
-        });
-    }
+    this.#data = boards;
+  }
 
-    createBoard(board) {
-        const name = board.getName();
-        const createdAt = board.getCreatedAt();
-        const div = document.createElement('div');
-        const boardName = document.createElement('p');
-        const boardCreatedAt = document.createElement('p');
+  async render() {
+    const boards = [...this.#data];
+    const container = document.querySelector("#container");
 
-        div.classList.add('board-container');
-        div.addEventListener('click', this.goToBoard.bind(this, board.getId()));
-        boardName.textContent = name;
-        boardCreatedAt.textContent = createdAt;
+    boards.forEach((board) => {
+      const createdBoard = this.createBoard(board);
+      container.append(createdBoard);
+    });
 
-        div.append(boardName, boardCreatedAt)
+    container.append(this.#button.buildButton());
+  }
 
-        return div
-    }
+  createBoard(board) {
+    const card = new Card(board);
 
-    goToBoard(boardId) {
-        window.location.href = `board.html?id=${boardId}`
-    }
+    return card.drawCard();
+  }
+
+  static saveEditingBoard(boardId) {
+    console.log('saving board')
+    const id = boardId.split("-")[1];
+    localStorage.setItem("boardId", id);
+  }
+
+  goToBoard(boardId) {
+    window.location.href = `board.html?id=${boardId}`;
+  }
 }

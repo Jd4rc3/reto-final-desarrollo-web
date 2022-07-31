@@ -16,7 +16,6 @@ class BoardController {
         await boardView.render();
     }
 
-
     getBoard() {
         const URL = new URLSearchParams(window.location.search);
         const id = parseInt(URL.get('id'))

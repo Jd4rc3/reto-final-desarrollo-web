@@ -1,12 +1,14 @@
 import {DataSender} from "./sendData.mjs";
 import {Config} from "../../config.mjs";
 import {BoardModel} from "../board.model.mjs";
+import {toggleModal} from "../../view/modal.mjs";
 
 /**
  * Board service to handle all the CRUD operations for the boards.
  */
 export class BoardsService {
-    #BackendURL
+    static BackendURL = Config.BackendURL;
+    #BackendURL;
 
     constructor() {
         this.#BackendURL = Config.BackendURL;
@@ -21,7 +23,7 @@ export class BoardsService {
         const board = await DataSender.getData(`${this.#BackendURL}/boards`);
         const {data} = board;
 
-        return data.map(board => new BoardModel(board))
+        return data.map((board) => new BoardModel(board));
     }
 
     /**
@@ -35,7 +37,7 @@ export class BoardsService {
 
         if (board.error) {
             alert(board.message);
-            window.location.href = 'index.html'
+            window.location.href = "index.html";
         }
 
         return new BoardModel(board.data);
@@ -44,11 +46,11 @@ export class BoardsService {
     /**
      * Delete a board by id.
      *
-     * @param id {number} board id
+     * @param id {string} board id
      * @returns {Promise<*>} response
      */
-    async deleteBoard(id) {
-        return await DataSender.sendData(`${this.#BackendURL}/boards/${id}`, {}, 'DELETE');
+    static async deleteBoard(id) {
+        return await DataSender.sendData(`${BoardsService.BackendURL}/boards/${id}`, {}, "DELETE");
     }
 
     /**
@@ -65,12 +67,14 @@ export class BoardsService {
     /**
      * Update a board by id.
      *
-     * @param id {number} board id
-     * @param data {object} board data
+     * @param id {string} board id
+     * @param newName
      * @returns {Promise<*>} response
      */
-    async updateBoard(id, data) {
-        const board = DataSender.sendData(`${this.#BackendURL}/boards/${id}`, data, 'PUT');
-        return new BoardModel(board.data);
+    static updateBoardName(id, newName) {
+        console.log(id)
+        const BackedURL = Config.BackendURL;
+
+        return DataSender.sendData(`${BackedURL}/boards/${id}`, {name: newName}, "PUT");
     }
 }
